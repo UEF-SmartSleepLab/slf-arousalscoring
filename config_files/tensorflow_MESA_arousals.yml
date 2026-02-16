@@ -1,0 +1,105 @@
+# Configuration for simultaneous scoring of arousals for the MESA dataset.
+module_str: "slf_simultscoring.utime_tf"
+
+model:
+  input_names:
+    - "c4m1"
+    - "emg"
+    - "np"
+  output_names:
+    - "arousals"
+  aspp_depth: 128
+  block_args:
+    - {kernel_size: 5, output_filters: 32, pool_size: 8, dilation: 2, strides: 1, se_ratio: 0.25}
+    - {kernel_size: 5, output_filters: 48, pool_size: 6, dilation: 2, strides: 1, se_ratio: 0.25}
+    - {kernel_size: 5, output_filters: 64, pool_size: 4, dilation: 2, strides: 1, se_ratio: 0.25}
+    - {kernel_size: 3, output_filters: 96, pool_size: 2, dilation: 1, strides: 1, se_ratio: 0.25}
+    - {kernel_size: 3, output_filters: 128, pool_size: 2, dilation: 1, strides: 1, se_ratio: 0.25}
+    - {kernel_size: 3, output_filters: 256, pool_size: 1, dilation: 1, strides: 1, se_ratio: 0.25}
+  activation: "keras.activations.elu"
+  output_args:
+    - output_name: "hypnogram"
+      n_classes: 5
+      samples_per_segment: 64 #30*fs
+      dense_ksize: 1
+      segment_ksize: 1
+    - output_name: "arousals"
+      n_classes: 2
+      samples_per_segment: 64
+      dense_ksize: 1
+      segment_ksize: 1
+
+training:
+  epochs: 100
+  batch_size: 8
+  peak_learning_rate: 0.001
+  lr_div_factor: 10.0
+  after_cycle_epochs: 20
+  model_ckpt_dir: "/wrk/hennpi/models"
+  initial_weights_path: "/wrk/hennpi/models/best_model_20250326_194001.keras" #path to an exsisting model used for weight initialization (if left empty, weights are initialized randomly)
+  alpha: [0.25, 0.75] #for focal loss (if left empty, categorical cross-entropy is used)
+  gamma: 2 #for focal loss
+
+datasets:
+  mesa:
+    ds_dir: "/wrk/hennpi/data/MESA/MESA_extracted"
+    series_name: "psg"
+    roi_src_type: "lights_off_on"
+    roi_src_name: "nsrr_hypnogram"
+
+    components:
+      c4m1:
+        src_name: "C4-M1"
+        ctype: "sample_array"
+        fs: 64.0
+      emg:
+        src_name: "chinEMG"
+        ctype: "sample_array"
+        fs: 64.0
+      np:
+        src_name: "NasalPressure"
+        ctype: "sample_array"
+        fs: 64.0
+      hypnogram:
+        src_name: "nsrr_hypnogram.a.json"
+        ctype: "annotation"
+        sampling_interval: 30
+        #fs: 1.0
+        return_type: "segmentation_combined"
+        value_map:
+          W: 0
+          N1: 1
+          N2: 2
+          N3: 3
+          R: 4
+          _default: 0
+      arousals:
+        src_name: "nsrr_aasmevents.a.json"
+        ctype: "annotation"
+        fs: 1.0
+        return_type: "segmentation_combined"
+        value_map:
+          AROUSAL: 1
+          AROUSAL_RES: 1
+          AROUSAL_SPONT: 1
+          AROUSAL_LM: 1
+          AROUSAL_PLM: 1
+          _default: 0
+
+    splits:
+      train:
+        n: 1642
+        config:
+          start_sec: -1.0  # Randomly choose start_sec at each iteration
+          duration: 3600  # Frame length in seconds
+      val:
+        n: 205
+        config:
+          start_sec: -1.0
+          duration: 3600
+      test:
+        n: 205
+        config:
+          # use whole-night signals
+          start_sec: 0.0
+          duration: -1.0

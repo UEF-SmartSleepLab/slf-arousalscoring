@@ -1,0 +1,74 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "slf-simultscoring"
+description = "Automatic simultaneous scoring of AASM sleep stages and events using sleeplab-format."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+keywords = []
+authors = [
+  { name = "Riku Huttunen", email = "riku.huttunen@uef.fi" },
+  { name = "Henna Pitkanen", email = "henna.pitkanen@uef.fi" },
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+]
+dependencies = [
+  "mlflow",
+  "numpy",
+  "pandas",
+  "scipy",
+  "seaborn",
+  "tqdm",
+  "ipykernel",
+  "tensorflow[and-cuda]>=2.16",
+  # "tensorflow>=2.16",  # If you don't have CUDA compatible GPU, switch the above to this to not install all CUDA stuff
+  "sleeplab-tf-dataset @ git+https://git@github.com/UEF-SmartSleepLab/sleeplab-tf-dataset@main"
+]
+dynamic = ["version"]
+
+[project.urls]
+Documentation = "https://github.com/UEF-SmartSleepLab/slf-simultscoring#readme"
+Issues = "https://github.com/UEF-SmartSleepLab/slf-simultscoring/issues"
+Source = "https://github.com/UEF-SmartSleepLab/slf-simultscoring"
+
+[tool.hatch.version]
+path = "src/slf_simultscoring/__about__.py"
+
+[tool.hatch.envs.default]
+dependencies = [
+  "pytest",
+  "pytest-cov",
+]
+[tool.hatch.envs.default.scripts]
+cov = "pytest --cov-report=term-missing --cov-config=pyproject.toml --cov=src/slf_simultscoring --cov=tests {args}"
+no-cov = "cov --no-cov {args}"
+
+[[tool.hatch.envs.test.matrix]]
+python = ["310", "311"]
+
+[tool.coverage.run]
+branch = true
+parallel = true
+omit = [
+  "src/slf_simultscoring/__about__.py",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
