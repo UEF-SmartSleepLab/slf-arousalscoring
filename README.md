@@ -1,5 +1,5 @@
 # slf-arousalscoring
-Train and evaluate PSG arousal scoring models using sleeplab-format. See the [instructions for downloading and converting the data](https://github.com/UEF-SmartSleepLab/sleeplab-format/tree/main/examples/dod_sleep_staging).
+Train and evaluate PSG arousal scoring models using [sleeplab-fomat](https://github.com/UEF-SmartSleepLab/sleeplab-format).
 
 **Table of Contents**
 
