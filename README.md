@@ -33,21 +33,19 @@ If you want to persist the data, substitute the `/tmp` folders with other locati
 After starting the MLFlow server, model training can be started using a configuration file (examples are under `config_files/`) by running in the project root folder:
 
 ```console
-python src/slf_arousalscoring/train.py --param-path config_files/tensorflow_MESA_arousals.yml --mlflow-tracking-uri http://localhost:5001
+python src/slf_simultscoring/train.py --param-path config_files/tensorflow_MESA_arousals.yml --mlflow-tracking-uri http://localhost:5001
 ```
 
 To use GPU with Tensorflow, you need to have [CUDA and CUDNN installed properly](https://www.tensorflow.org/install/pip). Then, you can use a GPU for training with `--tf-use-gpu` and `--visible-device` flags, for example to run training on GPU 1:
 
 ```console
-python src/slf_simultscoring/train.py --tf-use-gpu --visible-device 1 \
-    --param-path config_files/tensorflow_MESA_arousals.yml \
-    --mlflow-tracking-uri http://localhost:5001
+python src/slf_simultscoring/train.py --param-path config_files/tensorflow_MESA_arousals.yml --mlflow-tracking-uri http://localhost:5001 --tf-use-gpu --visible-device 1
 ```
 
 You can score arousals using the model by running:
 
 ```console
-python src/slf_arousalscoring/score_slf_dataset_arousals.py --ds-dir /tmp/data/MESA/MESA_extracted --series-names psg --scorer-ckpt-dir /tmp/models/slf-simultscoring/best_model_20250325_142347.keras --tf-config-path config_files/tensorflow_MESA_arousals.yml --ds-save-dir /tmp/Autoscores --cuda-visible-device 1
+python src/slf_simultscoring/score_slf_dataset_arousals.py --ds-dir /tmp/data/MESA/MESA_extracted --series-names psg --scorer-ckpt-dir /tmp/models/best_model_20250325_142347.keras --tf-config-path config_files/tensorflow_MESA_arousals.yml --ds-save-dir /tmp/Autoscores --cuda-visible-device 1
 ```
 
 ## License
