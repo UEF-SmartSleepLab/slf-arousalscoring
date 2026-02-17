@@ -47,7 +47,7 @@ python src/slf_simultscoring/train.py --tf-use-gpu --visible-device 1 \
 You can score arousals using the model by running:
 
 ```console
-python src/slf_arousalscoring/score_slf_dataset_arousals.py --ds-dir /wrk/hennpi/data/MESA/MESA_extracted --series-names psg --scorer-ckpt-dir /wrk/hennpi/models/slf-simultscoring/best_model_20250325_142347.keras --tf-config-path config_files/tensorflow_MESA_arousals.yml --ds-save-dir /home/hennpi/Documents/Autoscores --cuda-visible-device 2
+python src/slf_arousalscoring/score_slf_dataset_arousals.py --ds-dir /tmp/data/MESA/MESA_extracted --series-names psg --scorer-ckpt-dir /tmp/models/slf-simultscoring/best_model_20250325_142347.keras --tf-config-path config_files/tensorflow_MESA_arousals.yml --ds-save-dir /tmp/Autoscores --cuda-visible-device 1
 ```
 
 ## License
