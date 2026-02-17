@@ -1,5 +1,5 @@
 # slf-arousalscoring
-Train and evaluate PSG arousal scoring models using sleeplab-format.
+Train and evaluate PSG arousal scoring models using sleeplab-format. See the [instructions for downloading and converting the data](https://github.com/UEF-SmartSleepLab/sleeplab-format/tree/main/examples/dod_sleep_staging).
 
 **Table of Contents**
 
@@ -36,8 +36,6 @@ After starting the MLFlow server, model training can be started using a configur
 python src/slf_arousalscoring/train.py --param-path config_files/tensorflow_MESA_arousals.yml --mlflow-tracking-uri http://localhost:5001
 ```
 
-This will train a sleep staging model using MESA open data in sleeplab format. See the [instructions for downloading and converting the data](https://github.com/UEF-SmartSleepLab/sleeplab-format/tree/main/examples/dod_sleep_staging).
-
 To use GPU with Tensorflow, you need to have [CUDA and CUDNN installed properly](https://www.tensorflow.org/install/pip). Then, you can use a GPU for training with `--tf-use-gpu` and `--visible-device` flags, for example to run training on GPU 1:
 
 ```console
@@ -46,7 +44,7 @@ python src/slf_simultscoring/train.py --tf-use-gpu --visible-device 1 \
     --mlflow-tracking-uri http://localhost:5001
 ```
 
-You can score arousals with the model by running:
+You can score arousals using the model by running:
 
 ```console
 python src/slf_arousalscoring/score_slf_dataset_arousals.py --ds-dir /wrk/hennpi/data/MESA/MESA_extracted --series-names psg --scorer-ckpt-dir /wrk/hennpi/models/slf-simultscoring/best_model_20250325_142347.keras --tf-config-path config_files/tensorflow_MESA_arousals.yml --ds-save-dir /home/hennpi/Documents/Autoscores --cuda-visible-device 2
