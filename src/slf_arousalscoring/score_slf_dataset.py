@@ -155,8 +155,8 @@ def score_slf_ds(
     # scorer_ckpt = tf.keras.models.load_model(scorer_ckpt_dir)
     from importlib import import_module
     module = import_module(cfg['module_str'])
-    model = module.training.get_model(model_config)
-    model.load_weights(scorer_ckpt_dir)
+    scorer_ckpt = module.training.get_model(model_config)
+    scorer_ckpt.load_weights(scorer_ckpt_dir)
     score_func = partial(score_samples_tf, output_names=model_config['output_names'])
     
     logger.info(f'Reading SLF dataset from {ds_dir}...')
