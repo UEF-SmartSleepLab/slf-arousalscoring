@@ -107,7 +107,7 @@ def parse_annotations(scorer_outputs, start_ts, scorer='utime', no_event_thresho
         res[f'{scorer}_hypnogram'] = parse_hypnogram(scorer_outputs['hypnogram'], start_ts, scorer)
     
     if 'arousals' in scorer_outputs.keys():
-        res[f'{scorer}_aasmarousals'] = parse_arousals(scorer_outputs['arousals'], start_ts, scorer, no_event_threshold=no_event_threshold)
+        res[f'{scorer}_aasmevents'] = parse_arousals(scorer_outputs['arousals'], start_ts, scorer, no_event_threshold=no_event_threshold)
 
     return res
 
