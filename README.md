@@ -54,7 +54,7 @@ python src/slf_arousalscoring/train.py --tf-use-gpu --visible-device 1 \
 You can test the model by running:
 
 ```console
-python src/slf_arousalscoring/score_slf_dataset_arousals.py --ds-dir /wrk/hennpi/data/MESA/MESA_extracted --series-names psg --scorer-ckpt-dir /wrk/hennpi/models/slf-arousalscoring/best_model_20250325_142347.keras --tf-config-path config_files/tensorflow_MESA_arousals.yml --ds-save-dir /home/hennpi/Documents/Autoscores --cuda-visible-device 2
+python src/slf_arousalscoring/score_slf_dataset.py --ds-dir /wrk/hennpi/data/MESA/MESA_extracted --series-names psg --scorer-ckpt-dir /wrk/hennpi/models/slf-arousalscoring/best_model_20250325_142347.keras --tf-config-path config_files/tensorflow_MESA_arousals.yml --ds-save-dir /home/hennpi/Documents/Autoscores --cuda-visible-device 2
 ```
 
 ## License
